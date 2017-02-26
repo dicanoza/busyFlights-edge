@@ -4,13 +4,10 @@ import static com.diogenes.busyflights.model.Flight.Suplier.CrazyAir;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class CrazyAirFlight {
 
 	private String airline;
 	private Date arrivalDate;
-	@JsonIgnore
 	private Character cabinclass;
 	private String departureAirportCode;
 	private Date departureDate;

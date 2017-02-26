@@ -1,5 +1,6 @@
 package com.diogenes.busyflights.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,9 +33,16 @@ public class CrazyAirIntegrationService extends FlightSearchService {
 		// adding interceptor for logging
 		restTemplate.setInterceptors(interceptors);
 
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy");
+
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParam("origin", origin)
-				.queryParam("destination", destination).queryParam("departureDate", departureDate)
-				.queryParam("returnDate", returnDate).queryParam("numberOfPassengers", numberOfPassengers);
+				.queryParam("destination", destination).queryParam("numberOfPassengers", numberOfPassengers);
+		if (departureDate != null) {
+			builder.queryParam("departureDate", simpleDateFormat.format(departureDate));
+		}
+		if (returnDate != null) {
+			builder.queryParam("returnDate", simpleDateFormat.format(returnDate));
+		}
 
 		CrazyAirFlight[] crazyFlightArray = restTemplate.getForObject(builder.build().encode().toUri(),
 				CrazyAirFlight[].class);

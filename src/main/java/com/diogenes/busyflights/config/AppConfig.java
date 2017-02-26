@@ -25,7 +25,7 @@ public class AppConfig {
 	public ObjectMapper jsonMapper() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);
-		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"));
+		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
 		return objectMapper;
 	}
 }

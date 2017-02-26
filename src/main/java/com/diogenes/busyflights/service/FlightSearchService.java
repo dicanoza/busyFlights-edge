@@ -21,7 +21,7 @@ public class FlightSearchService {
 	@Autowired
 	private ToughJetIntegrationService toughJetIntegrationService;
 
-	public List<? extends Flight> searchFlights(String origin, String destination, Date departureDate, Date returnDate,
+	public List<Flight> searchFlights(String origin, String destination, Date departureDate, Date returnDate,
 			Integer numberOfPassengers) {
 
 		List<Flight> resultList = new ArrayList<Flight>();
