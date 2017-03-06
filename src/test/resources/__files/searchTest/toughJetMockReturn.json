@@ -1,0 +1,29 @@
+[
+	{
+		"carrier": "delta",
+		"basePrice": 100,
+		"tax": 10,
+		"discount":10,
+		"departureAirportName": "GRU",
+		"arrivalAirportName": "LAX",
+		"departureDay": 5,
+		"departureMonth": 2,
+		"departureYear": 2017,
+		"returnDay": 10,
+		"returnMonth": 2,
+		"returnYear": 2017
+	},
+	{
+		"carrier": "delta",
+		"basePrice": 150.29,
+		"departureAirportName": "LHR",
+		"arrivalAirportName": "LAX",
+		"departureDay": 5,
+		"departureMonth": 2,
+		"departureYear": 2017,
+		"returnDay": 10,
+		"returnMonth": 2,
+		"returnYear": 2017
+	}
+]
+

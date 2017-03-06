@@ -1,24 +1,37 @@
 package com.diogenes.busyflights.model;
 
-import static com.diogenes.busyflights.model.Flight.Suplier.CrazyAir;
+import static com.diogenes.busyflights.model.Flight.Suplier.CRAZY_AIR;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CrazyAirFlight {
 
+	private static final String CRAZYAIR_DATETIME = "MM-dd-yyyy HH:mm:ss";
+	
+	
 	private String airline;
-	private Date arrivalDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = CRAZYAIR_DATETIME)
+	private LocalDateTime arrivalDate;
 	private Character cabinclass;
 	private String departureAirportCode;
-	private Date departureDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = CRAZYAIR_DATETIME)
+	private LocalDateTime departureDate;
 	private String destinationAirportCode;
 	private Double price;
+	
+	public Flight flight() {
+		return new Flight().airline(airline).departureDate(departureDate).arrivalDate(arrivalDate)
+				.departureAirportCode(departureAirportCode).destinationAirportCode(destinationAirportCode).fare(price)
+				.suplier(CRAZY_AIR);
+	}
 
 	public String getAirline() {
 		return airline;
 	}
 
-	public Date getArrivalDate() {
+	public LocalDateTime getArrivalDate() {
 		return arrivalDate;
 	}
 
@@ -26,7 +39,7 @@ public class CrazyAirFlight {
 		return departureAirportCode;
 	}
 
-	public Date getDepartureDate() {
+	public LocalDateTime getDepartureDate() {
 		return departureDate;
 	}
 
@@ -38,7 +51,7 @@ public class CrazyAirFlight {
 		this.airline = airline;
 	}
 
-	public void setArrivalDate(Date arrivalDate) {
+	public void setArrivalDate(LocalDateTime arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
 
@@ -46,7 +59,7 @@ public class CrazyAirFlight {
 		this.departureAirportCode = departureAirportCode;
 	}
 
-	public void setDepartureDate(Date departureDate) {
+	public void setDepartureDate(LocalDateTime departureDate) {
 		this.departureDate = departureDate;
 	}
 
@@ -68,12 +81,6 @@ public class CrazyAirFlight {
 
 	public void setCabinclass(Character cabinclass) {
 		this.cabinclass = cabinclass;
-	}
-
-	public Flight flight() {
-		return new Flight().airline(airline).departureDate(departureDate).arrivalDate(arrivalDate)
-				.departureAirportCode(departureAirportCode).destinationAirportCode(destinationAirportCode).fare(price)
-				.suplier(CrazyAir);
 	}
 
 }

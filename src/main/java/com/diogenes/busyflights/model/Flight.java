@@ -1,7 +1,7 @@
 package com.diogenes.busyflights.model;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.ComparisonChain;
@@ -10,10 +10,9 @@ import com.google.common.collect.ComparisonChain;
 public class Flight {
 
 	private String airline;
-	private Date arrivalDate;
-
+	private LocalDateTime arrivalDate;
 	private String departureAirportCode;
-	private Date departureDate;
+	private LocalDateTime departureDate;
 	private String destinationAirportCode;
 	private Double fare;
 	private Suplier suplier;
@@ -23,7 +22,7 @@ public class Flight {
 		return this;
 	}
 
-	public Flight arrivalDate(Date arrivalDate) {
+	public Flight arrivalDate(LocalDateTime arrivalDate) {
 		this.arrivalDate = arrivalDate;
 		return this;
 	}
@@ -33,7 +32,7 @@ public class Flight {
 		return this;
 	}
 
-	public Flight departureDate(Date departureDate) {
+	public Flight departureDate(LocalDateTime departureDate) {
 		this.departureDate = departureDate;
 		return this;
 	}
@@ -57,7 +56,7 @@ public class Flight {
 		return airline;
 	}
 
-	public Date getArrivalDate() {
+	public LocalDateTime getArrivalDate() {
 		return arrivalDate;
 	}
 
@@ -65,7 +64,7 @@ public class Flight {
 		return departureAirportCode;
 	}
 
-	public Date getDepartureDate() {
+	public LocalDateTime getDepartureDate() {
 		return departureDate;
 	}
 
@@ -81,7 +80,7 @@ public class Flight {
 		this.airline = airline;
 	}
 
-	public void setArrivalDate(Date arrivalDate) {
+	public void setArrivalDate(LocalDateTime arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
 
@@ -89,7 +88,7 @@ public class Flight {
 		this.departureAirportCode = departureAirportCode;
 	}
 
-	public void setDepartureDate(Date departureDate) {
+	public void setDepartureDate(LocalDateTime departureDate) {
 		this.departureDate = departureDate;
 	}
 
@@ -122,7 +121,17 @@ public class Flight {
 	}
 
 	enum Suplier {
-		CrazyAir, ToughJet
+		CRAZY_AIR("CrazyAir"), THOUGH_JET("ToughJet");
+		private String value;
+
+		private Suplier(String value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return value;
+		}
 	}
 
 }

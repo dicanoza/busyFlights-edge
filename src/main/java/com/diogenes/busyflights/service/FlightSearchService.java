@@ -2,9 +2,9 @@ package com.diogenes.busyflights.service;
 
 import static com.diogenes.busyflights.model.Flight.flightFareComparator;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class FlightSearchService {
 	@Autowired
 	private ToughJetIntegrationService toughJetIntegrationService;
 
-	public List<Flight> searchFlights(String origin, String destination, Date departureDate, Date returnDate,
+	public List<Flight> searchFlights(String origin, String destination, LocalDate departureDate, LocalDate returnDate,
 			Integer numberOfPassengers) {
 
 		List<Flight> resultList = new ArrayList<Flight>();

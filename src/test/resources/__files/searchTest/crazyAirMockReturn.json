@@ -1,0 +1,20 @@
+[
+	{
+		"airline": "delta",
+		"price": 153.29,
+		"cabinclass": "B",
+		"departureAirportCode": "GRU",
+		"destinationAirportCode": "LAX",
+		"departureDate": "03-30-2016 12:34:39",
+		"arrivalDate": "04-01-2016 15:34:39"
+	},
+	{
+		"airline": "delta",
+		"price": 150.29,
+		"cabinclass": "E",
+		"departureAirportCode": "LHR",
+		"destinationAirportCode": "LAX",
+		"departureDate": "02-05-2017 12:24:39",
+		"arrivalDate": "03-30-2017 15:24:39"
+	}
+]

@@ -3,7 +3,7 @@ package com.diogenes.busyflights.controller;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,10 @@ public class FlightsSearchController {
 	@Validated
 	public List<Flight> search(@RequestParam(value = "origin", required = false) String origin,
 			@RequestParam(value = "destination", required = false) String destination,
-			@RequestParam(value = "departureDate", required = false) @DateTimeFormat(iso = DATE) Date departureDate,
-			@RequestParam(value = "returnDate", required = false) @DateTimeFormat(iso = DATE) Date returnDate,
+			@RequestParam(value = "departureDate", required = false) @DateTimeFormat(iso = DATE) LocalDate departureDate,
+			@RequestParam(value = "returnDate", required = false) @DateTimeFormat(iso = DATE) LocalDate returnDate,
 			@RequestParam(value = "numberOfPassengers", required = false) Integer numberOfPassengers) {
 
 		return flightSearchService.searchFlights(origin, destination, departureDate, returnDate, numberOfPassengers);
-
 	}
 }

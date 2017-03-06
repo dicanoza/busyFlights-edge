@@ -1,56 +1,80 @@
 package com.diogenes.busyflights.service;
 
-import java.text.SimpleDateFormat;
+import static java.lang.String.valueOf;
+import static java.time.format.DateTimeFormatter.ofPattern;
+
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.diogenes.busyflights.model.CrazyAirFlight;
 import com.diogenes.busyflights.model.Flight;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 @Service
 public class CrazyAirIntegrationService extends FlightSearchService {
 
-	private @Value("${CrasyFlights.url}") String url;
+	private static final Logger logger = LoggerFactory.getLogger(CrazyAirIntegrationService.class);
+	private static final String CRAZY_AIR_FORMAT = "MM-dd-yyyy";
+
+	@Value("${CrasyFlights.url}")
+	private String url;
+	private ObjectMapper mapper;
+
+	public CrazyAirIntegrationService() {
+		mapper = new ObjectMapper();
+		mapper.findAndRegisterModules();
+
+	}
 
 	@Override
-	public List<Flight> searchFlights(String origin, String destination, Date departureDate, Date returnDate,
+	public List<Flight> searchFlights(String origin, String destination, LocalDate departureDate, LocalDate returnDate,
 			Integer numberOfPassengers) {
 
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
 
-		List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
-		interceptors.add(new LogRequestResponse());
+		urlParameters.add(new BasicNameValuePair("origin", origin));
+		urlParameters.add(new BasicNameValuePair("destination", destination));
+		urlParameters.add(new BasicNameValuePair("numberOfPassengers", valueOf(numberOfPassengers)));
 
-		// adding interceptor for logging
-		restTemplate.setInterceptors(interceptors);
-
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy");
-
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParam("origin", origin)
-				.queryParam("destination", destination).queryParam("numberOfPassengers", numberOfPassengers);
 		if (departureDate != null) {
-			builder.queryParam("departureDate", simpleDateFormat.format(departureDate));
+			urlParameters
+					.add(new BasicNameValuePair("departureDate", departureDate.format(ofPattern(CRAZY_AIR_FORMAT))));
 		}
 		if (returnDate != null) {
-			builder.queryParam("returnDate", simpleDateFormat.format(returnDate));
+			urlParameters.add(new BasicNameValuePair("returnDate", returnDate.format(ofPattern(CRAZY_AIR_FORMAT))));
 		}
 
-		CrazyAirFlight[] crazyFlightArray = restTemplate.getForObject(builder.build().encode().toUri(),
-				CrazyAirFlight[].class);
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpGet request = new HttpGet(url);
+
 		List<Flight> resultList = new ArrayList<Flight>();
-		if (crazyFlightArray != null) {
-			for (CrazyAirFlight crazyFlight : crazyFlightArray) {
-				resultList.add(crazyFlight.flight());
+		try {
+			HttpResponse response = client.execute(request);
+			if (response.getStatusLine().getStatusCode() == 200) {
+				List<CrazyAirFlight> flightList = mapper.readValue(response.getEntity().getContent(),
+						TypeFactory.defaultInstance().constructCollectionType(List.class, CrazyAirFlight.class));
+				for (CrazyAirFlight flight : flightList) {
+					resultList.add(flight.flight());
+				}
+
 			}
+
+		} catch (IOException e) {
+			logger.warn("Error calling " + url, e);
 		}
 		return resultList;
 	}
