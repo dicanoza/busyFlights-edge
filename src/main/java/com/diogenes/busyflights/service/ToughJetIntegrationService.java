@@ -24,11 +24,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+/**
+ * 
+ * Class responsible for retrieve data from ThoughJet service
+ *
+ */
 @Service
 public class ToughJetIntegrationService extends FlightSearchService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ToughJetIntegrationService.class);
-	
+
 	@Value("${ToughJet.url}")
 	private String url;
 	private ObjectMapper mapper;
@@ -39,6 +44,16 @@ public class ToughJetIntegrationService extends FlightSearchService {
 
 	}
 
+	/**
+	 * Looks for Flights at ThoughJet services through http call
+	 * 
+	 * @param origin
+	 * @param destination
+	 * @param departureDate
+	 * @param returnDate
+	 * @param numberOfPassengers
+	 * @return {@link List} of {@link Flight}
+	 */
 	@Override
 	public List<Flight> searchFlights(String origin, String destination, LocalDate departureDate, LocalDate returnDate,
 			Integer numberOfPassengers) {

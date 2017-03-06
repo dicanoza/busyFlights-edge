@@ -40,6 +40,16 @@ public class CrazyAirIntegrationService extends FlightSearchService {
 
 	}
 
+	/**
+	 * Looks for Flights at CrazyAir service through http call
+	 * 
+	 * @param origin
+	 * @param destination
+	 * @param departureDate
+	 * @param returnDate
+	 * @param numberOfPassengers
+	 * @return {@link List} of {@link Flight}
+	 */
 	@Override
 	public List<Flight> searchFlights(String origin, String destination, LocalDate departureDate, LocalDate returnDate,
 			Integer numberOfPassengers) {

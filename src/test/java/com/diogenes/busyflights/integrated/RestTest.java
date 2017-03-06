@@ -55,8 +55,9 @@ public class RestTest {
 		stubFor(get(urlMatching("/toughjet/search(.*)"))
 				.willReturn(aResponse().withStatus(404).withHeader("Content-Type", "application/json")));
 
-		mvc.perform(get("/v1/search").param("departureDate", "2017-02-05")).andExpect(status().isOk())
-				.andExpect(jsonPath("$[0].fare", is(150.29)))
+		mvc.perform(get("/v1/search").param("departureDate", "2017-02-05").param("returnDate", "2017-02-13")
+				.param("numberOfPassengers", "3").param("origin", "LAX").param("destination", "GRU"))
+				.andExpect(status().isOk()).andExpect(jsonPath("$[0].fare", is(150.29)))
 				.andExpect(jsonPath("$[0].departureAirportCode", is("LHR")))
 				.andExpect(jsonPath("$[0].destinationAirportCode", is("LAX")))
 				.andExpect(jsonPath("$[0].suplier", is("CrazyAir")))
@@ -83,6 +84,64 @@ public class RestTest {
 				.andExpect(jsonPath("$[0].arrivalDate", matchesDatePattern(DATE_TIME_ISO_RETURN)))
 				.andExpect(jsonPath("$[0].arrivalDate",
 						is(DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.of(2017, 2, 10, 0, 0, 0)))));
+	}
+
+	@Test
+	public void testToughJetCrazyAirReturn200() throws Exception {
+		stubFor(get(urlMatching("/crazyair/search(.*)")).willReturn(aResponse().withStatus(200)
+				.withHeader("Content-Type", "application/json").withBodyFile("/searchTest/crazyAirMockReturn.json")));
+		stubFor(get(urlMatching("/toughjet/search(.*)")).willReturn(aResponse().withStatus(200)
+				.withHeader("Content-Type", "application/json").withBodyFile("/searchTest/toughJetMockReturn.json")));
+
+		mvc.perform(get("/v1/search").param("departureDate", "2017-02-05").param("returnDate", "2017-02-13")
+				.param("numberOfPassengers", "3").param("origin", "LAX").param("destination", "GRU"))
+				.andExpect(status().isOk()).andExpect(jsonPath("$[0].fare", is(99.0)))
+				.andExpect(jsonPath("$[0].departureAirportCode", is("GRU")))
+				.andExpect(jsonPath("$[0].destinationAirportCode", is("LAX")))
+				.andExpect(jsonPath("$[0].suplier", is("ToughJet")))
+				.andExpect(jsonPath("$[0].departureDate", matchesDatePattern(DATE_TIME_ISO_RETURN)))
+				.andExpect(jsonPath("$[0].departureDate",
+						is(DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.of(2017, 2, 5, 0, 0, 0)))))
+				.andExpect(jsonPath("$[0].arrivalDate", matchesDatePattern(DATE_TIME_ISO_RETURN)))
+				.andExpect(jsonPath("$[0].arrivalDate",
+						is(DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.of(2017, 2, 10, 0, 0, 0)))))
+				.andExpect(jsonPath("$[1].fare", is(150.29)))
+				.andExpect(jsonPath("$[1].departureAirportCode", is("LHR")))
+				.andExpect(jsonPath("$[1].destinationAirportCode", is("LAX")))
+				.andExpect(jsonPath("$[1].suplier", is("CrazyAir")))
+				.andExpect(jsonPath("$[1].departureDate",
+						is(DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.of(2017, 2, 5, 12, 24, 39)))))
+				.andExpect(jsonPath("$[1].arrivalDate", matchesDatePattern(DATE_TIME_ISO_RETURN)))
+				.andExpect(jsonPath("$[1].arrivalDate",
+						is(DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.of(2017, 3, 30, 15, 24, 39)))));
+	}
+	@Test
+	public void testToughJetCrazyAirReturn200_NoParam() throws Exception {
+		stubFor(get(urlMatching("/crazyair/search(.*)")).willReturn(aResponse().withStatus(200)
+				.withHeader("Content-Type", "application/json").withBodyFile("/searchTest/crazyAirMockReturn.json")));
+		stubFor(get(urlMatching("/toughjet/search(.*)")).willReturn(aResponse().withStatus(200)
+				.withHeader("Content-Type", "application/json").withBodyFile("/searchTest/toughJetMockReturn.json")));
+
+		mvc.perform(get("/v1/search"))
+				.andExpect(status().isOk()).andExpect(jsonPath("$[0].fare", is(99.0)))
+				.andExpect(jsonPath("$[0].departureAirportCode", is("GRU")))
+				.andExpect(jsonPath("$[0].destinationAirportCode", is("LAX")))
+				.andExpect(jsonPath("$[0].suplier", is("ToughJet")))
+				.andExpect(jsonPath("$[0].departureDate", matchesDatePattern(DATE_TIME_ISO_RETURN)))
+				.andExpect(jsonPath("$[0].departureDate",
+						is(DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.of(2017, 2, 5, 0, 0, 0)))))
+				.andExpect(jsonPath("$[0].arrivalDate", matchesDatePattern(DATE_TIME_ISO_RETURN)))
+				.andExpect(jsonPath("$[0].arrivalDate",
+						is(DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.of(2017, 2, 10, 0, 0, 0)))))
+				.andExpect(jsonPath("$[1].fare", is(150.29)))
+				.andExpect(jsonPath("$[1].departureAirportCode", is("LHR")))
+				.andExpect(jsonPath("$[1].destinationAirportCode", is("LAX")))
+				.andExpect(jsonPath("$[1].suplier", is("CrazyAir")))
+				.andExpect(jsonPath("$[1].departureDate",
+						is(DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.of(2017, 2, 5, 12, 24, 39)))))
+				.andExpect(jsonPath("$[1].arrivalDate", matchesDatePattern(DATE_TIME_ISO_RETURN)))
+				.andExpect(jsonPath("$[1].arrivalDate",
+						is(DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.of(2017, 3, 30, 15, 24, 39)))));
 	}
 
 	@Test

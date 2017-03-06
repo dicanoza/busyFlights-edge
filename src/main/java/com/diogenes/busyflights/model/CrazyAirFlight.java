@@ -6,11 +6,15 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/**
+ * 
+ * Represents CrazyAir returning object
+ *
+ */
 public class CrazyAirFlight {
 
 	private static final String CRAZYAIR_DATETIME = "MM-dd-yyyy HH:mm:ss";
-	
-	
+
 	private String airline;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = CRAZYAIR_DATETIME)
 	private LocalDateTime arrivalDate;
@@ -20,7 +24,12 @@ public class CrazyAirFlight {
 	private LocalDateTime departureDate;
 	private String destinationAirportCode;
 	private Double price;
-	
+
+	/**
+	 * Builds an Fligth using the values of the current object
+	 * 
+	 * @return {@link Flight}
+	 */
 	public Flight flight() {
 		return new Flight().airline(airline).departureDate(departureDate).arrivalDate(arrivalDate)
 				.departureAirportCode(departureAirportCode).destinationAirportCode(destinationAirportCode).fare(price)

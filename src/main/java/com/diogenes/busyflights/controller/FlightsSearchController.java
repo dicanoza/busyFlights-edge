@@ -22,6 +22,16 @@ public class FlightsSearchController {
 	@Autowired
 	private FlightSearchService flightSearchService;
 
+	/**
+	 * Rest service to find all Flights from all the partner providers
+	 * 
+	 * @param origin
+	 * @param destination
+	 * @param departureDate
+	 * @param returnDate
+	 * @param numberOfPassengers
+	 * @return a {@link List} of {@link Flight}
+	 */
 	@RequestMapping(value = "/v1/search", produces = { APPLICATION_JSON_UTF8_VALUE })
 	@Validated
 	public List<Flight> search(@RequestParam(value = "origin", required = false) String origin,

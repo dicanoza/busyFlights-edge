@@ -4,6 +4,11 @@ import static com.diogenes.busyflights.model.Flight.Suplier.THOUGH_JET;
 
 import java.time.LocalDateTime;
 
+/**
+ * 
+ * Represents ToughJet return object
+ *
+ */
 public class ToughJetFlight {
 
 	private String carrier;
@@ -19,6 +24,10 @@ public class ToughJetFlight {
 	private String departureAirportName;
 	private String arrivalAirportName;
 
+	/**
+	 * Parses the current objet into a {@link Flight}
+	 * @return {@link Flight}
+	 */
 	public Flight flight() {
 		Double price = basePrice;
 		if (tax != null) {

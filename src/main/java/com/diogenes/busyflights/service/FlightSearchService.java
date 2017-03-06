@@ -21,6 +21,16 @@ public class FlightSearchService {
 	@Autowired
 	private ToughJetIntegrationService toughJetIntegrationService;
 
+	/**
+	 * Looks for Flights at ThoughJet and CrazyAir services through http call
+	 * 
+	 * @param origin
+	 * @param destination
+	 * @param departureDate
+	 * @param returnDate
+	 * @param numberOfPassengers
+	 * @return {@link List} of {@link Flight}
+	 */
 	public List<Flight> searchFlights(String origin, String destination, LocalDate departureDate, LocalDate returnDate,
 			Integer numberOfPassengers) {
 

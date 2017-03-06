@@ -6,6 +6,12 @@ import java.util.Comparator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.ComparisonChain;
 
+/**
+ * 
+ * Represents an internal Flight, all integrations should be parsed into this
+ * class
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Flight {
 
@@ -16,6 +22,8 @@ public class Flight {
 	private String destinationAirportCode;
 	private Double fare;
 	private Suplier suplier;
+
+	// build methods
 
 	public Flight airline(String airline) {
 		this.airline = airline;
@@ -52,66 +60,117 @@ public class Flight {
 		return this;
 	}
 
+	// getters and setters
+	/**
+	 * @return the airline
+	 */
 	public String getAirline() {
 		return airline;
 	}
 
-	public LocalDateTime getArrivalDate() {
-		return arrivalDate;
-	}
-
-	public String getDepartureAirportCode() {
-		return departureAirportCode;
-	}
-
-	public LocalDateTime getDepartureDate() {
-		return departureDate;
-	}
-
-	public String getDestinationAirportCode() {
-		return destinationAirportCode;
-	}
-
-	public Double getFare() {
-		return fare;
-	}
-
+	/**
+	 * @param airline
+	 *            the airline to set
+	 */
 	public void setAirline(String airline) {
 		this.airline = airline;
 	}
 
+	/**
+	 * @return the arrivalDate
+	 */
+	public LocalDateTime getArrivalDate() {
+		return arrivalDate;
+	}
+
+	/**
+	 * @param arrivalDate
+	 *            the arrivalDate to set
+	 */
 	public void setArrivalDate(LocalDateTime arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
 
+	/**
+	 * @return the departureAirportCode
+	 */
+	public String getDepartureAirportCode() {
+		return departureAirportCode;
+	}
+
+	/**
+	 * @param departureAirportCode
+	 *            the departureAirportCode to set
+	 */
 	public void setDepartureAirportCode(String departureAirportCode) {
 		this.departureAirportCode = departureAirportCode;
 	}
 
+	/**
+	 * @return the departureDate
+	 */
+	public LocalDateTime getDepartureDate() {
+		return departureDate;
+	}
+
+	/**
+	 * @param departureDate
+	 *            the departureDate to set
+	 */
 	public void setDepartureDate(LocalDateTime departureDate) {
 		this.departureDate = departureDate;
 	}
 
+	/**
+	 * @return the destinationAirportCode
+	 */
+	public String getDestinationAirportCode() {
+		return destinationAirportCode;
+	}
+
+	/**
+	 * @param destinationAirportCode
+	 *            the destinationAirportCode to set
+	 */
 	public void setDestinationAirportCode(String destinationAirportCode) {
 		this.destinationAirportCode = destinationAirportCode;
 	}
 
+	/**
+	 * @return the fare
+	 */
+	public Double getFare() {
+		return fare;
+	}
+
+	/**
+	 * @param fare
+	 *            the fare to set
+	 */
 	public void setFare(Double fare) {
 		this.fare = fare;
 	}
 
-	public static FlightFareComparator flightFareComparator() {
-		return new FlightFareComparator();
-	}
-
+	/**
+	 * @return the suplier
+	 */
 	public String getSuplier() {
 		return suplier.toString();
 	}
 
+	/**
+	 * @param suplier
+	 *            the suplier to set
+	 */
 	public void setSuplier(String suplier) {
 		this.suplier = Suplier.valueOf(suplier);
 	}
 
+	/**
+	 * 
+	 * Comparator for {@link Flight#fare}
+	 *
+	 */
 	private static class FlightFareComparator implements Comparator<Flight> {
 
 		@Override
@@ -120,6 +179,15 @@ public class Flight {
 		}
 	}
 
+	public static FlightFareComparator flightFareComparator() {
+		return new FlightFareComparator();
+	}
+
+	/**
+	 * 
+	 * Enum type of Supliers
+	 *
+	 */
 	enum Suplier {
 		CRAZY_AIR("CrazyAir"), THOUGH_JET("ToughJet");
 		private String value;
